@@ -29,7 +29,7 @@ func main() {
 	printFilteredEnvVars(envs, conf)
 }
 
-func isSnsitiveEnvVar(env string, conf *Configure) bool {
+func isSensitiveEnvVar(env string, conf *Configure) bool {
 	givenKey := strings.SplitN(env, "=", 2)[0]
 	for _, key := range conf.SensitiveList.Keys {
 		if givenKey == key {
@@ -63,7 +63,7 @@ func loadConfigure() (*Configure, error) {
 
 func printFilteredEnvVars(envs []string, conf *Configure) {
 	for _, env := range envs {
-		if !isSnsitiveEnvVar(env, conf) {
+		if !isSensitiveEnvVar(env, conf) {
 			fmt.Println(env)
 		}
 	}
