@@ -21,14 +21,13 @@ type SensitiveList struct {
 func main() {
 	envs := os.Environ()
 
-	for _, env := range envs {
-		fmt.Println(isSnsitiveEnvVar(env))
-	}
 	conf, err := loadConfigure()
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println(conf)
+
+	printFilteredEnvVars(envs)
 }
 
 func isSnsitiveEnvVar(env string) bool {
@@ -59,4 +58,12 @@ func loadConfigure() (*Configure, error) {
 	toml.Unmarshal(rawConfBody, conf)
 
 	return conf, nil
+}
+
+func printFilteredEnvVars(envs []string) {
+	for _, env := range envs {
+		if !isSnsitiveEnvVar(env) {
+			fmt.Println(env)
+		}
+	}
 }
