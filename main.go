@@ -25,15 +25,16 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(conf)
 
-	printFilteredEnvVars(envs)
+	printFilteredEnvVars(envs, conf)
 }
 
-func isSnsitiveEnvVar(env string) bool {
-	key := strings.SplitN(env, "=", 2)[0]
-	if key == "SAMPLE_SECRET_ENV" {
-		return true
+func isSnsitiveEnvVar(env string, conf *Configure) bool {
+	givenKey := strings.SplitN(env, "=", 2)[0]
+	for _, key := range conf.SensitiveList.Keys {
+		if givenKey == key {
+			return true
+		}
 	}
 	return false
 }
@@ -60,9 +61,9 @@ func loadConfigure() (*Configure, error) {
 	return conf, nil
 }
 
-func printFilteredEnvVars(envs []string) {
+func printFilteredEnvVars(envs []string, conf *Configure) {
 	for _, env := range envs {
-		if !isSnsitiveEnvVar(env) {
+		if !isSnsitiveEnvVar(env, conf) {
 			fmt.Println(env)
 		}
 	}
