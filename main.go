@@ -15,7 +15,8 @@ func main() {
 }
 
 func isSnsitiveEnvVar(env string) bool {
-	if strings.HasPrefix(env, "SAMPLE_SECRET_ENV") {
+	key := strings.SplitN(env, "=", 2)[0]
+	if key == "SAMPLE_SECRET_ENV" {
 		return true
 	}
 	return false
