@@ -50,21 +50,19 @@ func isSensitiveEnvVar(env string, conf *Configure) bool {
 
 func loadConfigure() (*Configure, error) {
 	conf := new(Configure)
-	// confDir, err := os.UserConfigDir()
+	confDir, err := os.UserConfigDir()
 
-	// if err != nil {
-	// 	return nil, err
-	// }
+	if err != nil {
+		return nil, err
+	}
 
-	// confPath := path.Join(confDir, "safeprintenv", "config.toml")
-	confPath := path.Join("config.example.toml")
+	confPath := path.Join(confDir, "safeprintenv", "config.toml")
 	if _, err := os.Stat(confPath); os.IsNotExist(err) {
 		// config file not exist. Return empty config
 		return conf, nil
 	}
 
-	// rawConfBody, err := ioutil.ReadFile(path.Join(confPath))
-	rawConfBody, _ := ioutil.ReadFile("config.example.toml")
+	rawConfBody, err := ioutil.ReadFile(path.Join(confPath))
 	toml.Unmarshal(rawConfBody, conf)
 
 	return conf, nil
