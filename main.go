@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/pelletier/go-toml"
+	flag "github.com/spf13/pflag"
 )
 
 type Configure struct {
@@ -20,13 +21,21 @@ type SensitiveList struct {
 
 func main() {
 	envs := os.Environ()
+	var showAll *bool = flag.Bool("unsafe-all", false, "Show all environment variables. No filtered.")
+	flag.Parse()
 
 	conf, err := loadConfigure()
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	printFilteredEnvVars(envs, conf)
+	if *showAll {
+		for _, env := range envs {
+			fmt.Println(env)
+		}
+	} else {
+		printFilteredEnvVars(envs, conf)
+	}
 }
 
 func isSensitiveEnvVar(env string, conf *Configure) bool {
