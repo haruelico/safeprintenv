@@ -1,3 +1,6 @@
 [SensitiveList]
 keys = ['ADDITIONAL_KEY']
 
+[Filterstyle]
+style = "hidden" # defaut behavior
+# style = masked # masked output like "ENV=****"

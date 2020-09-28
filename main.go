@@ -13,10 +13,15 @@ import (
 
 type Configure struct {
 	SensitiveList SensitiveList
+	Filterstyle   Filterstyle
 }
 
 type SensitiveList struct {
 	Keys []string
+}
+
+type Filterstyle struct {
+	Style string
 }
 
 func main() {
@@ -72,6 +77,9 @@ func printFilteredEnvVars(envs []string, conf *Configure) {
 	for _, env := range envs {
 		if !isSensitiveEnvVar(env, conf) {
 			fmt.Println(env)
+		} else if conf.Filterstyle.Style == "masked" {
+			givenKey := strings.SplitN(env, "=", 2)[0]
+			fmt.Printf("%s=********\n", givenKey)
 		}
 	}
 }
