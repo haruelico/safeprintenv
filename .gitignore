@@ -25,3 +25,6 @@
 
 # Local History for Visual Studio Code
 .history/
+
+# for goreleaser
+dist/
